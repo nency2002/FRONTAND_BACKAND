@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <title>signup</title>
+</head>
+<body>
+    <div id="navbar"></div>
+
+    <form action="" id="signupForm">
+        <h1>Signup</h1>
+        <input type="text" name="name" placeholder="Enter name" id="name"><br><br>
+        <input type="email" name="email" placeholder="Enter email" id="email"><br><br>
+        <input type="text" name="password" placeholder="Enter password" id="password"><br><br>
+        <input type="submit" value="Signup"><br><br>
+    </form>
+</body>
+</html>
+<script type="module" src="../js/login.js"></script>
+<script >
+
+    document.getElementById("signupForm").addEventListener("submit",(e)=>{
+        e.preventDefault();
+        let user={
+            name:document.getElementById("name").value,
+            email:document.getElementById("email").value,
+            password:document.getElementById("password").value,
+        }
+        console.log(user)
+
+        fetch(`http://localhost:2002/User/Signup`,{
+            method: "POST",
+            headers: {"content-type": "application/json"},
+            body: JSON.stringify(user)
+        })
+        .then((res)=>res.json())
+        .then((data)=>{
+            console.log(data)
+            document.cookie = `token=${data.token};path=/;`;
+            alert('Signup Sucessfully');
+            window.location.href="http://127.0.0.1:5500/cilent/pages/login.html";
+        })
+    })
+</script>

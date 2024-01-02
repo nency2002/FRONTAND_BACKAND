@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <title>ProductList</title>
+</head>
+<body>
+    <div id="navbar"></div>
+
+    <form action="" id="ProductForm">
+        <h1>Product List</h1>
+        <input type="text" name="image" placeholder="Enter image" id="image"><br><br>
+        <input type="text" name="title" placeholder="Enter title" id="title"><br><br>
+        <input type="text" name="desc" placeholder="Enter desc" id="desc"><br><br>
+        <input type="text" name="price" placeholder="Enter price" id="price"><br><br>
+        <input type="text" name="catogory" placeholder="Enter catogory" id="catogory"><br><br>
+        <input type="submit" value="Submit"><br><br>
+    </form>
+</body>
+</html>
+<script type="module" src="../js/login.js"></script>
+<script >
+
+    document.getElementById("ProductForm").addEventListener("submit",(e)=>{
+        e.preventDefault();
+        let user={
+            image:document.getElementById("image").value,
+            title:document.getElementById("title").value,
+            desc:document.getElementById("desc").value,
+            price:document.getElementById("price").value,
+            catogory:document.getElementById("catogory").value,
+        }
+        console.log(user)
+
+        fetch(`http://localhost:2002/Product/Create`,{
+            method: "POST",
+            headers: {"content-type": "application/json"},
+            body: JSON.stringify(user)
+        })
+        .then((res)=>res.json())
+        .then((data)=>{
+            console.log(data)
+            alert('create Sucessfully');
+            window.location.href="http://127.0.0.1:5500/cilent/index.html";
+        })
+    })
+</script>

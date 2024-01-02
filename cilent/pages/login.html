@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <title>Document</title>
+</head>
+<body>
+    <div id="navbar"></div>
+    <section class="login">
+        <form action="" id="loginForm">
+            <h1>Login</h1>
+            <input type="email" name="email" placeholder="Enter email" id="emails"><br><br>
+            <input type="text" name="password" placeholder="Enter password" id="passwords"><br><br>
+            <input type="submit" value="Login" ><br><br>
+        </form>
+    </section>
+</body>
+</html>
+<script type="module" src="../js/login.js"></script>
+<script>
+   
+    const cookie = document.cookie;
+    console.log(cookie)
+    document.getElementById("loginForm").addEventListener("submit",(e)=>{
+        e.preventDefault();
+        let user={
+            email:document.getElementById("emails").value,
+            password:document.getElementById("passwords").value
+        }
+        fetch(`http://localhost:2002/User/Login`,{
+            method: "POST",
+            headers: {"content-type" : "application/json"},
+            body: JSON.stringify(user)
+        })
+        .then((res)=>res.json())
+        .then((data)=>{
+            console.log(data)
+            document.cookie = `token=${data.token};path=/;`;
+            window.location.href="http://127.0.0.1:5500/cilent/index.html"
+        })
+    })
+</script>

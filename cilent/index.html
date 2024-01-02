@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>nency</title>
+</head>
+<body>
+    <div id="navbar"></div>
+    <div id="box"></div>
+</body>
+</html>
+<script type="module" src="/cilent/js/login.js"></script>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script >
+   
+    const HandlePay = async (amount) => {
+                let res = await fetch(`http://localhost:2002/Product/Payment`, {
+                    method: "POST",
+                    headers: { "content-type": "application/json" },
+                    body: JSON.stringify({ amount: amount })
+                });
+                let order = await res.json();
+                console.log(order);
+
+                let options = {
+                    key: "rzp_test_67TKW3OGPNMj27",
+                    amount: order.amount,
+                };
+                var repyer = new Razorpay(options);
+                repyer.open();
+            }
+
+    const display=(data)=>{
+        document.getElementById("box").innerHTML="";
+        data.map((ele)=>{
+            img = document.createElement("img");
+            img.src=ele.image;
+
+            title=document.createElement("h3");
+            title.innerHTML=ele.title;
+
+            desc = document.createElement("p");
+            desc.innerHTML=ele.desc;
+
+            price = document.createElement("p");
+            price.innerHTML=`₹ ${ele.price}`;
+
+            catogory = document.createElement("p");
+            catogory.innerHTML=ele.catogory;
+
+            btn = document.createElement("button");
+            btn.innerHTML="Buy Now"
+            btn.addEventListener("click", () => HandlePay(ele.price))
+
+
+            div =document.createElement("div");
+            div.append(img , title ,desc ,price ,catogory , btn);
+
+            document.getElementById("box").append(div);
+        })
+    }
+
+    const get=()=>{
+        fetch(`http://localhost:2002/Product/All`)
+        .then((res)=>res.json())
+        .then((data)=>{
+            console.log(data)
+            display(data)
+        })
+        .catch((err)=>console.log(err))
+    }
+    get();
+</script>
+</html>
